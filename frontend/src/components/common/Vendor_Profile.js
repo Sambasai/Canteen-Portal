@@ -1,0 +1,169 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import { useNavigate } from "react-router-dom";
+
+
+//axios.get("/api/vendor/"+sessionStorage.getItem("id"));
+
+const Vendor = (props) => {
+    const [manager_name, setManagerName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [contact_no, setContact_no] = useState("");
+    const [shop_name, setShopName] = useState("");
+    const [open_time, setOpenTime] = useState("");
+    const [close_time, setCloseTime] = useState("");
+    //setID(sessionStorage.getItem("id"));
+    useEffect(() => {
+        axios
+            .get("/api/vendor_details/" + sessionStorage.getItem("id"))
+            .then((response) => {
+                //alert("Created\t" + response.data.name);
+                setManagerName(response.data.manager_name);
+                setEmail(response.data.email);
+                setPassword(response.data.password);
+                setContact_no(response.data.contact_no);
+                setShopName(response.data.shop_name);
+                setOpenTime(response.data.open_time);
+                setCloseTime(response.data.close_time);
+                console.log(response.data);
+            });
+    }, []);
+    const onChangeUsername = (event) => {
+        setManagerName(event.target.value);
+    };
+
+    const onChangeemail = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const onChangePassword = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const onChangecontact_no = (event) => {
+        setContact_no(event.target.value);
+    };
+
+    const onChangeShopName = (event) => {
+        setShopName(event.target.value);
+    };
+
+    const onChangeOpenTime = (event) => {
+        setOpenTime(event.target.value);
+    };
+
+    const onChangeCloseTime = (event) => {
+        setCloseTime(event.target.value);
+    };
+
+    const resetInputs = () => {
+        setManagerName("");
+        setEmail("");
+        setPassword("");
+        setContact_no("");
+        setShopName("");
+        setOpenTime("");
+        setCloseTime("");
+    };
+
+    const onEdit = (event) => {
+        event.preventDefault();
+
+        const newUser = {
+            manager_name: manager_name,
+            email: email,
+            password: password,
+            contact_no: contact_no,
+            open_time: open_time,
+            close_time: close_time,
+            shop_name: shop_name
+        };
+
+        axios
+            .post("/api/vendor_details/update/" + sessionStorage.getItem("id"), newUser)
+            .then((response) => {
+                alert("Updated\t" + shop_name);
+                console.log(response.data);
+            });
+
+        //resetInputs();
+    };
+
+    return (
+
+        <Grid container align={"center"} spacing={2}>
+            <Grid item xs={12}>
+                <TextField
+                    label="Manager Name"
+                    variant="outlined"
+                    value={manager_name}
+                    onChange={onChangeUsername}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="email"
+                    variant="outlined"
+                    value={email}
+                    onChange={onChangeemail}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="password"
+                    variant="outlined"
+                    value={password}
+                    onChange={onChangePassword}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="contact_no"
+                    variant="outlined"
+                    value={contact_no}
+                    onChange={onChangecontact_no}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="opening time"
+                    variant="outlined"
+                    value={open_time}
+                    onChange={onChangeOpenTime}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="closing time"
+                    variant="outlined"
+                    value={close_time}
+                    onChange={onChangeCloseTime}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="shop_name"
+                    variant="outlined"
+                    value={shop_name}
+                    onChange={onChangeShopName}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Button variant="contained" onClick={onEdit}>
+                    Edit
+                </Button>
+            </Grid>
+        </Grid>
+    );
+};
+
+export default Vendor;
