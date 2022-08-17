@@ -1,6 +1,6 @@
 # Canteen Portal
 
-<!-- <img src=".png" width="250"/> -->
+<img src="mern.png" width="250"/>
 
 A modern user-centric campus food stalls management system. The MERN stack based application supports the following features for various types of users:
 
